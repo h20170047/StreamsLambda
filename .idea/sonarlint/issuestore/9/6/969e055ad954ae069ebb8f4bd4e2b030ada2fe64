@@ -1,0 +1,20 @@
+
+Q	java:S125"<This block of commented-out lines of code should be removed.(¹äì¯
+W
+java:S6397"5Replace this character class by the character itself.(ÑøÄúÿÿÿÿ8ÎÇÙÚ¼0
+O
+java:S6395"-Unwrap this unnecessarily grouped subpattern.(ÑøÄúÿÿÿÿ8ÎÇÙÚ¼0
+O
+java:S6395"-Unwrap this unnecessarily grouped subpattern.(ŒÑ°òúÿÿÿÿ8ÎÇÙÚ¼0
+g
+java:S3457&"Q%n should be used in place of \n to produce the platform-specific line separator.(€Á„÷
+N	java:S106&"9Replace this use of System.out or System.err by a logger.(€Á„÷
+l
+java:S3457'"Q%n should be used in place of \n to produce the platform-specific line separator.(Â‚äšúÿÿÿÿ
+S	java:S106'"9Replace this use of System.out or System.err by a logger.(Â‚äšúÿÿÿÿ
+l
+java:S3457("Q%n should be used in place of \n to produce the platform-specific line separator.(¬‡÷Ôûÿÿÿÿ
+S	java:S106("9Replace this use of System.out or System.err by a logger.(¬‡÷Ôûÿÿÿÿ
+g
+java:S3457)"Q%n should be used in place of \n to produce the platform-specific line separator.(Ñóãº
+N	java:S106)"9Replace this use of System.out or System.err by a logger.(Ñóãº
