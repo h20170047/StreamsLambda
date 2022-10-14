@@ -3,13 +3,14 @@ package org.svj.employees;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class  Employee {
+public abstract class  Employee implements IEmployee{
     protected final DateTimeFormatter dtFormatter= DateTimeFormatter.ofPattern("M/d/yyyy");
     protected final NumberFormat moneyFormat= NumberFormat.getCurrencyInstance();
-    private final static String PEOPLE_REGEX ="(?<lastName>\\w+),\\s*(?<firstName>\\w+),\\s*(?<dob>\\d{1,2}/\\d{1,2}/\\d{4}),\\s+(?<role>\\w+),\\s+\\{(?<details>.*)}\\n";
+    private final static String PEOPLE_REGEX ="(?<lastName>\\w+),\\s*(?<firstName>\\w+),\\s*(?<dob>\\d{1,2}/\\d{1,2}/\\d{4}),\\s*(?<role>\\w+),(?:\\s*\\{(?<details>.*)\\})";
     protected final static Pattern PEOPLE_PATTERN =Pattern.compile(PEOPLE_REGEX, Pattern.COMMENTS);
     protected final Matcher personMatcher;
     protected String lastName;
@@ -21,7 +22,7 @@ public abstract class  Employee {
         firstName="N/A"; lastName="N/A";
     }
 
-    public static Employee createEmployee(String employeeText) {
+    public static IEmployee createEmployee(String employeeText) {
         Matcher personMatcher = Employee.PEOPLE_PATTERN.matcher(employeeText);
         if(personMatcher.find())
             return switch (personMatcher.group("role")){
@@ -29,9 +30,9 @@ public abstract class  Employee {
                 case "Manager" -> new Manager(employeeText);
                 case "Analyst" ->new Analyst(employeeText);
                 case "CEO" -> new CEO(employeeText);
-                default -> new EmptyEmployee();
+                default -> ()-> 0;
             };
-        return new EmptyEmployee();
+        return ()->0;
     }
 
     public abstract int getSalary();
@@ -63,5 +64,18 @@ public abstract class  Employee {
             return 0;
         }
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Employee)) return false;
+        Employee employee = (Employee) o;
+        return lastName.equals(employee.lastName) && firstName.equals(employee.firstName) && dob.equals(employee.dob);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(lastName, firstName, dob);
     }
 }
