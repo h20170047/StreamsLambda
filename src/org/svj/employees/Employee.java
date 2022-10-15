@@ -66,6 +66,7 @@ public abstract class  Employee implements IEmployee{
 
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -82,6 +83,15 @@ public abstract class  Employee implements IEmployee{
     @Override
     public int compareTo(IEmployee o) {
         Employee other= (Employee) o;
-        return this.lastName.compareTo(other.lastName);
+        return this.firstName.compareTo(other.firstName);
+//        int lastNameVal = this.lastName.compareTo(other.lastName);
+//        if(lastNameVal== 0){
+//            int firstNameVal= this.firstName.compareTo(other.firstName);
+//            if(firstNameVal== 0){
+//                return this.dob.compareTo(other.dob);
+//            }
+//            return firstNameVal;
+//        }
+//        return lastNameVal;
     }
 }

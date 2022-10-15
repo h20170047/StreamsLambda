@@ -5,10 +5,20 @@ import java.util.*;
 import java.util.regex.Matcher;
 
 public class Employees {
+
+    private static Set<IEmployee> employees;
+    private static Map<String, Integer> empMap;
+
     public static void main(String[] args) {
         String peopleText= """
                 Flinstone, Fred, 1/1/1900, Programmer, {locpd=2000,yoe=10,iq=140}
-                Flinstone2, Fred2, 1/1/1900, Programmerzzzz, {locpd=1300,yoe=14,iq=100}
+                Flinstone, Fred, 1/1/1900, Programmer, {locpd=4000,yoe=10,iq=140}
+                Flinstone, Fred, 1/1/1900, Programmer, {locpd=5000,yoe=10,iq=140}
+                Flinstone, Fred, 1/1/1900, Programmer, {locpd=6000,yoe=10,iq=140}
+                Flinstone, Fred, 1/1/1900, Programmer, {locpd=7000,yoe=10,iq=140}
+                Flinstone, Fred, 1/1/1900, Programmer, {locpd=8000,yoe=10,iq=140}
+                Flinstone, Fred, 1/1/1900, Programmerzzz, {locpd=10000,yoe=10,iq=140}
+                Flinstone2, Fred2, 1/1/1900, Programmer, {locpd=1300,yoe=14,iq=100}
                 Flinstone3, Fred3, 1/1/1900, Programmer, {locpd=2300,yoe=8,iq=105}
                 Flinstone4, Fred4, 1/1/1900, Programmer, {locpd=1630,yoe=3,iq=115}
                 Flinstone5, Fred5, 1/1/1900, Programmer, {locpd=5,yoe=10,iq=100}
@@ -36,50 +46,32 @@ public class Employees {
 
         int totalSalaries= 0;
         IEmployee employee= null;
-        List<IEmployee> employees= new ArrayList<>(16);
+        employees = new TreeSet<>(Comparator.comparingInt(IEmployee::getSalary));
+        empMap = new LinkedHashMap<>();
         while (peopleMatcher.find()) {
             employee= Employee.createEmployee(peopleMatcher.group());
+            Employee emp= (Employee) employee;
             employees.add(employee);
+            empMap.putIfAbsent(emp.firstName, emp.getSalary());
         }
 
-        IEmployee myEmployee = employees.get(4);
-        System.out.println(employees.contains(myEmployee));
+//        new ArrayList<>(employees).get(0);
 
-        IEmployee employee1 = Employee.createEmployee("Flinstone5, Fred5, 1/1/1900, Programmer, {locpd=5,yoe=10,iq=100}");
-        System.out.println(employees.contains(employee1));
-
-        System.out.println(myEmployee.equals(employee1));
-
-
-        employees.sort(Comparator.reverseOrder());
-
-//        employees.sort((o1, o2) -> {
-//            if(o1 instanceof Employee emp1 && o2 instanceof Employee emp2){
-//                int lnameResult= emp1.lastName.compareTo(emp2.lastName);
-//                return lnameResult==0? Integer.compare(emp1.getSalary(), emp2.getSalary()): lnameResult;
-//            }
-//            return 0;
-//        });
-
-//        List<String> undesirables= new ArrayList<>(List.of("Wilma5", "Barney4", "Fred2"));
-//        undesirables.sort(Comparator.naturalOrder());
-//        System.out.println(undesirables);
-//        removeUndesirables(employees, undesirables);
-//
-//        IEmployee[] arrayEmps = employees.toArray(new IEmployee[0]);
-//        for(IEmployee emp: arrayEmps){
-//            if(emp instanceof Employee tempEmp)
-//            System.out.println("From new array: "+tempEmp.toString());
-//        }
-//
-//
         for(IEmployee worker: employees){
             System.out.println(worker.toString());
             totalSalaries+= worker.getSalary();
         }
-//
+
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
         System.out.format("Total payout is %s", currencyFormatter.format(totalSalaries));
+
+        System.out.println("\nEmployees size is "+ employees.size());
+
+        System.out.println(empMap.entrySet());
+
+//        for(Map.Entry<String, Integer> entry: empMap.entrySet()){
+//            System.out.printf("Key=  %s, Value= %s\n", entry.getKey(), entry.getValue());
+//        }
 
 //        peopleText.lines()
 //                .map(Employee:: createEmployee)
@@ -95,5 +87,9 @@ public class Employees {
                 }
             }
         }
+    }
+
+    public int getSalary(String firstName) {
+        return empMap.getOrDefault(firstName, -1);
     }
 }
