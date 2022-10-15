@@ -1,10 +1,7 @@
 package org.svj.employees;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 
 public class Employees {
@@ -54,7 +51,19 @@ public class Employees {
         System.out.println(myEmployee.equals(employee1));
 
 
-//        List<String> undesirables= List.of("Wilma5", "Barney4", "Fred2");
+        employees.sort(Comparator.reverseOrder());
+
+//        employees.sort((o1, o2) -> {
+//            if(o1 instanceof Employee emp1 && o2 instanceof Employee emp2){
+//                int lnameResult= emp1.lastName.compareTo(emp2.lastName);
+//                return lnameResult==0? Integer.compare(emp1.getSalary(), emp2.getSalary()): lnameResult;
+//            }
+//            return 0;
+//        });
+
+//        List<String> undesirables= new ArrayList<>(List.of("Wilma5", "Barney4", "Fred2"));
+//        undesirables.sort(Comparator.naturalOrder());
+//        System.out.println(undesirables);
 //        removeUndesirables(employees, undesirables);
 //
 //        IEmployee[] arrayEmps = employees.toArray(new IEmployee[0]);
@@ -64,13 +73,13 @@ public class Employees {
 //        }
 //
 //
-//        for(IEmployee worker: employees){
-//            System.out.println(worker.toString());
-//            totalSalaries+= worker.getSalary();
-//        }
+        for(IEmployee worker: employees){
+            System.out.println(worker.toString());
+            totalSalaries+= worker.getSalary();
+        }
 //
-//        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
-//        System.out.format("Total payout is %s", currencyFormatter.format(totalSalaries));
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
+        System.out.format("Total payout is %s", currencyFormatter.format(totalSalaries));
 
 //        peopleText.lines()
 //                .map(Employee:: createEmployee)
