@@ -17,19 +17,25 @@ public class BigData {
         try {
             long startTime = System.currentTimeMillis();
 //            Map<String, String> listState =
-            TreeMap<String, Map<Character, String>> result = Files.lines(Path.of("C:\\Users\\svjra\\Documents\\git\\Springboot\\StreamsLambda\\src\\org\\svj\\resources\\people.csv"))
+            Map<Boolean, Map<String, Long>> result = Files.lines(Path.of("C:\\Users\\svjra\\Documents\\git\\Springboot\\StreamsLambda\\src\\org\\svj\\resources\\people.csv"))
 //                    .parallel()
                     .skip(1)
+//                    .limit(200)
                     .map(o -> o.split(","))
                     .map(s -> new person(s[2], s[4], new BigDecimal(s[25]), s[32], s[5].strip().charAt(0)))
-                    .collect(
-                            groupingBy(person::state, TreeMap::new,
-                                    groupingBy(person::gender,
-                                            collectingAndThen(
-                                                    reducing(BigDecimal.ZERO, person::salary, (a, b) -> a.add(b)),
-                                                    NumberFormat.getCurrencyInstance()::format))
-                            ));
+//                    .filter(p->p.gender()=='F')
+                    .collect(partitioningBy(p->p.gender()=='F',
+                            groupingBy(person::state, counting())));
+
+//                    .collect(
+//                            groupingBy(person::state, TreeMap::new,
+//                                    groupingBy(person::gender,
+//                                            collectingAndThen(
+//                                                    reducing(BigDecimal.ZERO, person::salary, (a, b) -> a.add(b)),
+//                                                    NumberFormat.getCurrencyInstance()::format))
+//                            ));
 //                    .forEach((state, salary)-> System.out.printf("%s-> %s%n", state, salary));
+
                     // Map<String, Map<Character, String>>
 //                    .mapToLong(person::salary)
 //                    .sum();
