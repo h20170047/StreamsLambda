@@ -22,6 +22,22 @@ public abstract class  Employee implements IEmployee{
         firstName="N/A"; lastName="N/A";
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
     public static IEmployee createEmployee(String employeeText) {
         Matcher personMatcher = Employee.PEOPLE_PATTERN.matcher(employeeText);
         if(personMatcher.find())
@@ -66,7 +82,6 @@ public abstract class  Employee implements IEmployee{
 
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -83,7 +98,7 @@ public abstract class  Employee implements IEmployee{
     @Override
     public int compareTo(IEmployee o) {
         Employee other= (Employee) o;
-        return this.firstName.compareTo(other.firstName);
+        return this.lastName.compareTo(other.lastName);
 //        int lastNameVal = this.lastName.compareTo(other.lastName);
 //        if(lastNameVal== 0){
 //            int firstNameVal= this.firstName.compareTo(other.firstName);

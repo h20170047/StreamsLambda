@@ -2,7 +2,13 @@ package org.svj.employees;
 
 import java.text.NumberFormat;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.Comparator.comparing;
+import static java.util.function.Predicate.not;
 
 public class Employees {
 
@@ -34,48 +40,54 @@ public class Employees {
                 Flinstone5, Wilma5, 3/3/1910, Analyst, {projectCount=9}
                 Rubble, Betty, 4/4/1915, CEO, {avgStockPrice=300}
                 """;
-//        String peopleRegex="(?<lastName>\\w+),\\s*(?<firstName>\\w+),\\s*(?<dob>\\d{1,2}/\\d{1,2}/\\d{4}),\\s+(?<role>\\w+),\\s+\\{(?<details>.*)}\\n";
-//        Pattern peoplePattern=Pattern.compile(peopleRegex, Pattern.COMMENTS);
-        Matcher peopleMatcher= Employee.PEOPLE_PATTERN.matcher(peopleText);
 
-//        Flyer flyer= new CEO("");
-//        flyer.fly();
+//        Optional<Employee> optionalEmployee = peopleText.lines()
+//                .map(Employee::createEmployee)
+//                .map(e -> (Employee) e)
+//                .filter(not(e -> "N/A".equals(e.getFirstName())))
+////                        .map(e->e.getSalary())
+////                        .distinct()
+////                .forEach(System.out::println);
+////                .noneMatch(e -> e.getSalary() <0);
+//                .findFirst();
+////        boolean salaryFilter =
+////                (boolean) optionalEmployee;
+////        optionalEmployee= Optional.ofNullable(null);
+//        System.out.format(optionalEmployee
+//                .map(Employee::getLastName)
+//                .orElse("Nobody"));
 
-//        Programmer coder= new Programmer("");
-//        coder.cook("Hamburger");
+//                .map(Employee::getFirstName)
+//                .map(name->name.split(""))
+//                .flatMap(Arrays::stream)
+//                .distinct()
+//                .forEach(v-> System.out.print(String.valueOf(v)));
 
-        int totalSalaries= 0;
-        IEmployee employee= null;
-        employees = new TreeSet<>(Comparator.comparingInt(IEmployee::getSalary));
-        empMap = new LinkedHashMap<>();
-        while (peopleMatcher.find()) {
-            employee= Employee.createEmployee(peopleMatcher.group());
-            Employee emp= (Employee) employee;
-            employees.add(employee);
-            empMap.putIfAbsent(emp.firstName, emp.getSalary());
-        }
+        Predicate<String> dummyEmployee = e -> e.contains("Programmerzzz");
+        Predicate<Employee> nonEmptyEmployee = not(e -> "N/A".equals(e.getLastName()));
+        Predicate<Employee> over5KSalary = e -> e.getSalary() > 5000;
+//        double result = peopleText.lines()
+//                .map(Employee::createEmployee)
+//                .map(iEmployee -> (Employee)iEmployee)
+////                .filter(emptyEmployee)
+////                .filter(e->e.getSalary()>5000)
+//                .filter(over5KSalary.and(nonEmptyEmployee))
+//                .sorted(comparing(Employee::getLastName)
+//                        .thenComparing(Employee::getFirstName)
+//                        .thenComparingInt(Employee::getSalary))
+//                .skip(5)
+//                .mapToInt(Employees:: showEmpAndGetSalary)
+//                .reduce(Integer::max).orElse(-1);
+//        System.out.printf("Sum of salary is %s", NumberFormat.getCurrencyInstance().format(result));
+        String concatenated = Stream.of("tom")
+                .reduce((a,b)->a.toUpperCase().concat("_").concat(b.toUpperCase())).orElse("Empty String");
+//        TOM_JERRY_MARY_SAM
+        System.out.println(concatenated);
+    }
 
-//        new ArrayList<>(employees).get(0);
-
-        for(IEmployee worker: employees){
-            System.out.println(worker.toString());
-            totalSalaries+= worker.getSalary();
-        }
-
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
-        System.out.format("Total payout is %s", currencyFormatter.format(totalSalaries));
-
-        System.out.println("\nEmployees size is "+ employees.size());
-
-        System.out.println(empMap.entrySet());
-
-//        for(Map.Entry<String, Integer> entry: empMap.entrySet()){
-//            System.out.printf("Key=  %s, Value= %s\n", entry.getKey(), entry.getValue());
-//        }
-
-//        peopleText.lines()
-//                .map(Employee:: createEmployee)
-//                .forEach(System.out::println);
+    private static int showEmpAndGetSalary(IEmployee e) {
+        System.out.println(e.toString());
+        return e.getSalary();
     }
 
     private static void removeUndesirables(List<IEmployee> employees, List<String> removalNames) {

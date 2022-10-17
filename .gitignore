@@ -1,2 +1,6 @@
 .idea/
 out/
+src/org/svj/resources/Hr5m.csv
+*.class
+*.class
+*.csv#
